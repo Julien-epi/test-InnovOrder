@@ -5,6 +5,7 @@ import {
   Body,
   Put,
   Param,
+  UseGuards
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,15 +23,8 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-
-  @Get('/profile/:id')
-  findOne(@Param('id') id: number) {
-    return this.usersService.findOne(id);
-  }
-
-  @Put('/modify/:id')
+  @Put('/update/:id') 
   update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
-
 }

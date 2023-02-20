@@ -13,15 +13,13 @@ export class UsersService {
 
   ) {}
 
-  async create(args: CreateUserDto): Promise<User> {
-    const result = await this.userRepository.save({
-      ...args,
-    });
-    return result;
+  async create(user: CreateUserDto): Promise<User> {
+    const newUser = this.userRepository.create({ ...user });
+    return this.userRepository.save(newUser);
   }
 
-  async findOne(userId: number) {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+  async findOne(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { email: email } });
     return user;
   }
 

@@ -1,9 +1,11 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { RegisterForm } from "../types/user";
-import toast from "react-hot-toast";
 import authServices from "../services/authServices";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function Register() {
+  const navigate = useNavigate();
 
   const {
     register,
@@ -14,6 +16,8 @@ export default function Register() {
       firstname: "",
       lastname: "",
       email: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
@@ -22,11 +26,11 @@ export default function Register() {
       .register(formData)
       .then((response) => {
         if (response.status === 201) {
+          navigate("/login");
           toast.success("User was registered !", { duration: 3000 });
         }
       })
       .catch((err) => {
-        console.log("🚀 ~ file: Register.tsx:31 ~ Register ~ err", err)
         toast.error("Email already exists !", { duration: 3000 });
       });
   };
@@ -42,7 +46,7 @@ export default function Register() {
           minLength: 2,
           required: { value: true, message: "This is required" },
         })}
-        placeholder="First name"
+        placeholder="Firstname"
       />
       {errors.firstname && <p>Firstname is not valide</p>}
 
@@ -67,6 +71,28 @@ export default function Register() {
         placeholder="Email"
       />
       {errors.email && <p>Email is not valide</p>}
+
+      <input
+        className="border p-2 m-5"
+        type="password"
+        {...register("password", {
+          minLength: 6,
+          required: { value: true, message: "This is required" },
+        })}
+        placeholder="Please enter password"
+      />
+      {errors.password && <p>Password is not valide</p>}
+      <input
+        className="border p-2 m-5"
+        type="password"
+        {...register("confirmPassword", {
+          minLength: 6,
+          required: { value: true, message: "This is required" },
+        })}
+        placeholder="Please confirm password"
+      />
+      
+      {errors.confirmPassword && <p>Password is not valide min 6 caracters</p>}
 
       <input type="submit" />
     </form>
